@@ -882,7 +882,12 @@ function showQ() {
   state.x2Active = false;
   state.puUsed = { f50: false, freeze: false, x2: false };
 
-  const qs = QUESTIONS[state.cat];
+ if (state.qIdx === 0) {
+  shuffledQuestions = [...QUESTIONS[state.cat]];
+  shuffledQuestions.sort(() => Math.random() - 0.5);
+}
+
+const qs = shuffledQuestions;
   if (!qs || state.qIdx >= qs.length) {
     if (state.isHost) dbUpdate(dbRef(db, `rooms/${state.roomCode}`), { status: 'done' });
     return;
@@ -984,7 +989,12 @@ function showAnswerReveal(correct, chosen, pts) {
     `<div class="ans-btn ${i === state.currentQ.c ? 'correct' : ''}" style="cursor:default">${a}</div>`
   ).join('');
 
-  const qs = QUESTIONS[state.cat];
+ if (state.qIdx === 0) {
+  shuffledQuestions = [...QUESTIONS[state.cat]];
+  shuffledQuestions.sort(() => Math.random() - 0.5);
+}
+
+const qs = shuffledQuestions;
   const isLast = state.qIdx >= qs.length - 1;
   document.getElementById('next-btn').textContent = isLast ? 'النتائج النهائية' : 'السؤال التالي';
   document.getElementById('next-btn').style.display = state.isHost ? 'block' : 'none';
@@ -1001,7 +1011,12 @@ function showAnswerReveal(correct, chosen, pts) {
 }
 
 async function nextQ() {
-  const qs = QUESTIONS[state.cat];
+  if (state.qIdx === 0) {
+  shuffledQuestions = [...QUESTIONS[state.cat]];
+  shuffledQuestions.sort(() => Math.random() - 0.5);
+}
+
+const qs = shuffledQuestions;
   const next = state.qIdx + 1;
   if (next >= qs.length) {
     await dbUpdate(dbRef(db, `rooms/${state.roomCode}`), { status: 'done' });
@@ -1182,7 +1197,12 @@ setTimeout(() => {
       }, 1000);
     };
     window.nextQ = function() {
-      const qs = QUESTIONS[state.cat];
+    if (state.qIdx === 0) {
+  shuffledQuestions = [...QUESTIONS[state.cat]];
+  shuffledQuestions.sort(() => Math.random() - 0.5);
+}
+
+const qs = shuffledQuestions;
       state.qIdx++;
       if (state.qIdx >= qs.length) { showResults(); }
       else { showQ(); }
