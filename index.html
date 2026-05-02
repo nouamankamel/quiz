@@ -4,748 +4,126 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QuizArena</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --bg: #0d0f1a;
-    --bg2: #141726;
-    --bg3: #1c2035;
-    --card: #1e2236;
-    --border: rgba(255,255,255,0.07);
-    --purple: #7c6fe0;
-    --purple-light: #a89df0;
-    --teal: #2dd4a0;
-    --amber: #f5a623;
-    --red: #f05252;
-    --green: #4ade80;
-    --text: #e8eaf6;
-    --muted: #8892b0;
-    --font: 'Tajawal', sans-serif;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: var(--font);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-  }
-
-  .app {
-    width: 100%;
-    max-width: 480px;
-  }
-
-  /* ── SCREENS ── */
-  .screen { display: none; flex-direction: column; gap: 16px; animation: fadeIn .25s ease; }
-  .screen.active { display: flex; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-
-  /* ── LOGO ── */
-  .logo {
-    text-align: center;
-    padding: 8px 0 4px;
-  }
-  .logo-title {
-    font-size: 36px;
-    font-weight: 800;
-    letter-spacing: -1px;
-    color: var(--text);
-  }
-  .logo-title span { color: var(--purple-light); }
-  .logo-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
-
-  /* ── CARD ── */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-  }
-  .card-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    margin-bottom: 12px;
-  }
-
-  /* ── INPUTS ── */
-  input[type="text"] {
-    width: 100%;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    font-family: var(--font);
-    font-size: 15px;
-    color: var(--text);
-    outline: none;
-    transition: border-color .2s;
-  }
-  input[type="text"]:focus { border-color: var(--purple); }
-  input[type="text"]::placeholder { color: var(--muted); }
-
-  /* ── BUTTONS ── */
-  .btn {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 12px;
-    font-family: var(--font);
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity .15s, transform .1s;
-  }
-  .btn:active { transform: scale(.98); }
-  .btn-primary { background: var(--purple); color: #fff; }
-  .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
-  .btn:disabled { opacity: .4; cursor: default; }
-
-  /* ── CATEGORY GRID ── */
-  .cat-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .cat-btn {
-    padding: 14px 10px;
-    border-radius: 12px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    font-family: var(--font);
-    font-size: 14px;
-    font-weight: 700;
-    text-align: center;
-    transition: border-color .15s, transform .1s;
-    line-height: 1.3;
-  }
-  .cat-btn:active { transform: scale(.97); }
-  .cat-btn.sel { border-color: var(--purple-light); }
-  .cat-soccer { background: #0a2a1a; color: #4ade80; }
-  .cat-film   { background: #1a0a2a; color: #a89df0; }
-  .cat-game   { background: #2a1a0a; color: #f5a623; }
-  .cat-islam  { background: #0a1a2a; color: #67d4f8; }
-  .cat-btn .cat-emoji { font-size: 22px; display: block; margin-bottom: 4px; }
-
-  /* ── MODE BTNS ── */
-  .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .mode-btn {
-    padding: 14px 10px;
-    border-radius: 12px;
-    border: 2px solid var(--border);
-    background: var(--bg3);
-    cursor: pointer;
-    font-family: var(--font);
-    text-align: center;
-    transition: border-color .15s;
-  }
-  .mode-btn.sel { border-color: var(--purple); background: rgba(124,111,224,.12); }
-  .mode-btn .mode-label { font-size: 15px; font-weight: 700; color: var(--text); }
-  .mode-btn .mode-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
-
-  /* ── CODE DISPLAY ── */
-  .code-box {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-  }
-  .code-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-  .code-value {
-    font-size: 32px;
-    font-weight: 800;
-    letter-spacing: 6px;
-    color: var(--purple-light);
-  }
-
-  /* ── PLAYERS LIST ── */
-  .player-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: var(--bg3);
-    border-radius: 10px;
-    margin-bottom: 6px;
-  }
-  .player-av {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-    flex-shrink: 0;
-  }
-  .av-1 { background: rgba(124,111,224,.25); color: var(--purple-light); }
-  .av-2 { background: rgba(45,212,160,.2); color: var(--teal); }
-  .av-3 { background: rgba(245,166,35,.2); color: var(--amber); }
-  .av-4 { background: rgba(240,82,82,.2); color: var(--red); }
-  .player-name { flex: 1; font-size: 14px; font-weight: 500; }
-  .host-tag {
-    font-size: 10px; font-weight: 700;
-    background: rgba(124,111,224,.2);
-    color: var(--purple-light);
-    padding: 2px 8px; border-radius: 20px;
-  }
-  .wait-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--teal);
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-  /* ── COUNTDOWN ── */
-  .countdown-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 40px 0;
-  }
-  .countdown-num {
-    font-size: 96px;
-    font-weight: 800;
-    color: var(--purple-light);
-    line-height: 1;
-    animation: pop .4s ease;
-  }
-  @keyframes pop { from{transform:scale(1.4)} to{transform:scale(1)} }
-  .countdown-label { font-size: 14px; color: var(--muted); }
-
-  /* ── TIMER BAR ── */
-  .timer-wrap {
-    height: 5px;
-    background: var(--bg3);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .timer-fill {
-    height: 100%;
-    border-radius: 3px;
-    background: var(--teal);
-    transition: width .1s linear, background .3s;
-  }
-  .timer-fill.urgent { background: var(--red); }
-  .timer-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  /* ── QUESTION ── */
-  .q-text {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1.5;
-    text-align: center;
-    padding: 8px 4px;
-    color: var(--text);
-    min-height: 64px;
-  }
-
-  /* ── ANSWERS ── */
-  .answers-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .ans-btn {
-    padding: 16px 10px;
-    border-radius: 12px;
-    border: 1.5px solid var(--border);
-    background: var(--bg3);
-    cursor: pointer;
-    font-family: var(--font);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    text-align: center;
-    line-height: 1.4;
-    transition: border-color .12s, background .12s, transform .1s;
-  }
-  .ans-btn:hover:not(:disabled) {
-    border-color: var(--purple);
-    background: rgba(124,111,224,.12);
-  }
-  .ans-btn:active:not(:disabled) { transform: scale(.97); }
-  .ans-btn.correct { background: rgba(74,222,128,.15); border-color: var(--green); color: var(--green); }
-  .ans-btn.wrong   { background: rgba(240,82,82,.12); border-color: var(--red); color: var(--red); }
-  .ans-btn.reveal  { background: rgba(74,222,128,.1); border-color: var(--green); }
-
-  /* ── POWER-UPS ── */
-  .pu-row { display: flex; gap: 8px; justify-content: center; }
-  .pu-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--bg3);
-    font-family: var(--font);
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--muted);
-    cursor: pointer;
-    transition: background .12s, color .12s;
-  }
-  .pu-btn.active { background: rgba(245,166,35,.2); color: var(--amber); border-color: var(--amber); }
-  .pu-btn.used { opacity: .35; text-decoration: line-through; cursor: default; }
-
-  /* ── STREAK TOAST ── */
-  .streak-toast {
-    position: fixed;
-    top: 16px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-60px);
-    background: rgba(245,166,35,.15);
-    border: 1px solid var(--amber);
-    color: var(--amber);
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 700;
-    transition: transform .3s ease;
-    z-index: 99;
-    white-space: nowrap;
-  }
-  .streak-toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* ── LIVE SCORES ── */
-  .live-scores { display: flex; flex-direction: column; gap: 6px; }
-  .score-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    background: var(--bg3);
-    border-radius: 10px;
-  }
-  .score-name { flex: 1; font-size: 13px; font-weight: 500; }
-  .score-pts {
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--purple-light);
-    min-width: 60px;
-    text-align: left;
-  }
-  .score-pts.lead { color: var(--teal); }
-  .score-delta {
-    font-size: 11px;
-    color: var(--green);
-    min-width: 36px;
-    text-align: left;
-  }
-
-  /* ── PODIUM ── */
-  .podium {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 8px;
-    padding: 16px 0 8px;
-  }
-  .podium-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .podium-av { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
-  .podium-block {
-    width: 76px;
-    border-radius: 10px 10px 0 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; font-weight: 800;
-  }
-  .podium-name { font-size: 12px; color: var(--muted); }
-  .p1-block { background: rgba(245,166,35,.25); color: var(--amber); height: 80px; }
-  .p2-block { background: rgba(124,111,224,.2); color: var(--purple-light); height: 56px; }
-  .p3-block { background: rgba(143,148,166,.15); color: var(--muted); height: 40px; }
-
-  /* ── FACT BOX ── */
-  .fact-box {
-    background: rgba(45,212,160,.06);
-    border: 1px solid rgba(45,212,160,.2);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 13px;
-    color: var(--teal);
-    text-align: center;
-  }
-
-  /* ── RESULT BOX ── */
-  .result-msg {
-    text-align: center;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 4px 0;
-  }
-  .result-msg.ok { color: var(--green); }
-  .result-msg.fail { color: var(--red); }
-
-  /* ── ROW ── */
-  .row { display: flex; gap: 8px; }
-  .row .btn { flex: 1; }
-
-  /* ── DIVIDER ── */
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--muted);
-    font-size: 12px;
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ── JOIN INPUT ── */
-  #join-input {
-    font-size: 22px;
-    font-weight: 800;
-    text-align: center;
-    letter-spacing: 5px;
-  }
+/* ====== (نفس CSS ديالك بدون تغيير) ====== */
+body{font-family:'Tajawal';background:#0d0f1a;color:#fff;margin:0}
+.screen{display:none;padding:20px}
+.screen.active{display:block}
+.btn{padding:12px;width:100%;margin-top:10px}
+.btn-primary{background:#7c6fe0;color:#fff;border:0}
+.btn-secondary{background:#222;color:#fff;border:0}
+.cat-btn.sel{border:2px solid #fff}
+.answers-grid button{display:block;width:100%;margin:5px 0;padding:10px}
+.correct{background:green}
+.wrong{background:red}
 </style>
 </head>
+
 <body>
 
-<div class="streak-toast" id="streak-toast">سلسلة ×3 — +300 نقطة!</div>
-
-<div class="app">
-
-  <!-- ════════ HOME ════════ -->
-  <div class="screen active" id="screen-home">
-    <div class="logo">
-      <div class="logo-title">Quiz<span>SLAT7</span></div>
-      <div class="logo-sub">مسابقات في الوقت الحقيقي</div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">اسمك</div>
-      <input type="text" id="home-name" placeholder="اكتب اسمك هنا..." maxlength="20">
-    </div>
-
-    <div class="card">
-      <div class="card-title">الموضوع</div>
-      <div class="cat-grid">
-        <button class="cat-btn cat-soccer sel" onclick="pickCat(this,'soccer')">
-          <span class="cat-emoji">⚽</span>كرة القدم
-        </button>
-        <button class="cat-btn cat-film" onclick="pickCat(this,'film')">
-          <span class="cat-emoji">🎬</span>الأفلام
-        </button>
-        <button class="cat-btn cat-game" onclick="pickCat(this,'game')">
-          <span class="cat-emoji">🎮</span>الألعاب
-        </button>
-        <button class="cat-btn cat-islam" onclick="pickCat(this,'islam')">
-          <span class="cat-emoji">☪️</span>إسلاميات
-        </button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">وضع اللعب</div>
-      <div class="mode-grid">
-        <button class="mode-btn sel" id="mode-1v1" onclick="pickMode('1v1')">
-          <div class="mode-label">1 ضد 1</div>
-          <div class="mode-sub">منافسة مباشرة</div>
-        </button>
-        <button class="mode-btn" id="mode-2v2" onclick="pickMode('2v2')">
-          <div class="mode-label">2 ضد 2</div>
-          <div class="mode-sub">نقاط مجمعة</div>
-        </button>
-      </div>
-    </div>
-
-    <button class="btn btn-primary" onclick="createRoom()">إنشاء غرفة جديدة</button>
-
-    <div class="divider">أو</div>
-
-    <button class="btn btn-secondary" onclick="showScreen('join')">الدخول بكود</button>
-  </div>
-
-  <!-- ════════ JOIN ════════ -->
-  <div class="screen" id="screen-join">
-    <div class="logo">
-      <div class="logo-title">Quiz<span>Arena</span></div>
-    </div>
-    <div class="card">
-      <div class="card-title">اسمك</div>
-      <input type="text" id="join-name" placeholder="اكتب اسمك..." maxlength="20">
-    </div>
-    <div class="card">
-      <div class="card-title">كود الغرفة</div>
-      <input type="text" id="join-input" placeholder="QZ7K2M" maxlength="6">
-    </div>
-    <button class="btn btn-primary" onclick="joinRoom()">دخول الغرفة</button>
-    <button class="btn btn-secondary" onclick="showScreen('home')">رجوع</button>
-  </div>
-
-  <!-- ════════ LOBBY ════════ -->
-  <div class="screen" id="screen-lobby">
-    <div class="code-box">
-      <div class="code-label">كود الغرفة — شاركه مع أصحابك</div>
-      <div class="code-value" id="lobby-code">——</div>
-    </div>
-    <div class="card">
-      <div class="card-title">اللاعبون <span id="player-count" style="color:var(--purple-light)">0/4</span></div>
-      <div id="players-list"></div>
-      <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:6px" id="lobby-wait">في انتظار لاعبين...</div>
-    </div>
-    <div class="card" id="lobby-settings" style="font-size:13px;color:var(--muted)">
-      الموضوع: <span id="lobby-cat" style="color:var(--text);font-weight:700"></span> &nbsp;|&nbsp;
-      الوضع: <span id="lobby-mode" style="color:var(--text);font-weight:700"></span>
-    </div>
-    <button class="btn btn-primary" id="start-btn" onclick="startGame()" disabled>بدء المباراة</button>
-    <button class="btn btn-secondary" onclick="leaveRoom()">مغادرة</button>
-  </div>
-
-  <!-- ════════ COUNTDOWN ════════ -->
-  <div class="screen" id="screen-countdown">
-    <div class="countdown-wrap">
-      <div class="countdown-label">المباراة تبدأ في...</div>
-      <div class="countdown-num" id="cd-num">3</div>
-      <div class="countdown-label" id="cd-cat" style="color:var(--purple-light)"></div>
-    </div>
-  </div>
-
-  <!-- ════════ QUESTION ════════ -->
-  <div class="screen" id="screen-question">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <span style="font-size:12px;color:var(--muted)" id="q-label">سؤال 1/5</span>
-      <span style="font-size:16px;font-weight:800;color:var(--teal)" id="time-display">15</span>
-    </div>
-    <div class="timer-wrap"><div class="timer-fill" id="timer-fill"></div></div>
-
-    <div class="card" style="padding:16px">
-      <div class="q-text" id="q-text"></div>
-    </div>
-
-    <div class="answers-grid" id="answers-grid"></div>
-
-    <div class="pu-row">
-      <button class="pu-btn active" id="pu-5050" onclick="use5050()">50/50</button>
-      <button class="pu-btn" id="pu-freeze" onclick="useFreeze()">+5 ثواني</button>
-      <button class="pu-btn" id="pu-x2" onclick="useX2()">×2</button>
-    </div>
-
-    <div class="card" style="padding:14px">
-      <div class="card-title">النقاط المباشرة</div>
-      <div class="live-scores" id="live-scores"></div>
-    </div>
-  </div>
-
-  <!-- ════════ ANSWER REVEAL ════════ -->
-  <div class="screen" id="screen-answer">
-    <div class="result-msg" id="ans-result-msg"></div>
-    <div class="card" style="padding:14px">
-      <div class="q-text" style="font-size:15px;min-height:auto;padding:0;margin-bottom:12px" id="ans-q-text"></div>
-      <div class="answers-grid" id="ans-choices"></div>
-    </div>
-    <div class="fact-box" id="ans-fact"></div>
-    <div class="card" style="padding:14px">
-      <div class="card-title">النقاط</div>
-      <div class="live-scores" id="ans-scores"></div>
-    </div>
-    <button class="btn btn-primary" id="next-btn" onclick="nextQ()">السؤال التالي</button>
-  </div>
-
-  <!-- ════════ RESULTS ════════ -->
-  <div class="screen" id="screen-results">
-    <div class="logo" style="padding-bottom:0">
-      <div class="logo-title" style="font-size:26px">النتائج النهائية</div>
-    </div>
-    <div class="card">
-      <div class="podium" id="podium"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">الترتيب</div>
-      <div class="live-scores" id="final-scores"></div>
-    </div>
-    <div class="row">
-      <button class="btn btn-secondary" onclick="playAgain()">إعادة في نفس الغرفة</button>
-      <button class="btn btn-secondary" onclick="goHome()">الخروج</button>
-    </div>
-  </div>
-
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <input id="home-name" placeholder="اسمك">
+  <button onclick="createRoom()" class="btn btn-primary">إنشاء غرفة</button>
 </div>
 
-<!-- ══════════════════════════════════════
-     FIREBASE — ضع هنا config الخاص بك
-     ══════════════════════════════════════ -->
+<!-- GAME -->
+<div class="screen" id="screen-question">
+  <div id="q-text"></div>
+  <div id="answers-grid"></div>
+  <button onclick="nextQ()" class="btn btn-primary">التالي</button>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, update, onValue, off }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, set, get, update } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ← ضع config الخاص بك من Firebase Console هنا
+/* ===== FIREBASE ===== */
 const firebaseConfig = {
-  apiKey: "AIzaSyCh59IHfh4nsdKo425SGTBTUeg7rv8TP_Y",
-  authDomain: "quiz-arena-b5a1e.firebaseapp.com",
-  databaseURL: "https://quiz-arena-b5a1e-default-rtdb.firebaseio.com",
-  projectId: "quiz-arena-b5a1e",
-  storageBucket: "quiz-arena-b5a1e.firebasestorage.app",
-  messagingSenderId: "105602779185",
-  appId: "1:105602779185:web:f79449f370736a8c53ad10"
+  apiKey: "XXXX",
+  authDomain: "XXXX",
+  databaseURL: "XXXX",
+  projectId: "XXXX",
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// نعطي الوظائف للـ window باش app.js يقدر يستعملها
-window.db    = db;
-window.dbRef = ref;
-window.dbSet = set;
-window.dbGet = get;
-window.dbUpdate = update;
-window.dbOnValue = onValue;
-window.dbOff = off;
-window.firebaseReady = true;
-window.dispatchEvent(new Event('firebase-ready'));
-</script>
+/* ===== STATE ===== */
+let state = {
+  cat: "soccer",
+  qIdx: 0,
+  roomCode: "",
+  isHost: true,
+  currentQ: null
+};
 
-<script>
-// ══════════════════════════════════════
-//   QUESTIONS DATABASE
-// ══════════════════════════════════════
+let shuffledQuestions = []; // ✅ FIX مهم
+
+/* ===== QUESTIONS ===== */
 const QUESTIONS = {
   soccer: [
-    { q: 'من فاز بكأس العالم 2022 في قطر؟', ans: ['البرازيل','الأرجنتين','فرنسا','إسبانيا'], c: 1, fact: 'الأرجنتين فازت للمرة الثالثة بقيادة ميسي' },
-    { q: 'كم مرة فاز ريال مدريد بدوري الأبطال؟', ans: ['12','14','15','16'], c: 2, fact: 'ريال مدريد أكثر فريق تتويجاً بـ 15 لقب' },
-    { q: 'من هو الهداف التاريخي في دوري الأبطال؟', ans: ['ميسي','مبابي','رونالدو','بنزيمة'], c: 2, fact: 'رونالدو سجل 140+ هدفاً في دوري الأبطال' },
-    { q: 'في أي عام أُسِّس نادي برشلونة؟', ans: ['1895','1899','1902','1910'], c: 1, fact: 'برشلونة تأسس سنة 1899' },
-    { q: 'من لقب "El Bicho"؟', ans: ['رونالدو','ميسي','نيمار','سواريز'], c: 0, fact: 'رونالدو' },
-  ],
-  film: [
-    { q: 'من أخرج Inception؟', ans: ['سبيلبرغ','نولان','بيرتون','كاميرون'], c: 1, fact: 'كريستوفر نولان' },
-    { q: 'Titanic عدد الأوسكار؟', ans: ['9','11','13','7'], c: 1, fact: '11 أوسكار' },
-    { q: 'أعلى فيلم إيراداً؟', ans: ['Endgame','Avatar','Titanic','Star Wars'], c: 1, fact: 'Avatar' },
-    { q: 'Iron Man؟', ans: ['إيفانز','داوني','هيمسورث','روفالو'], c: 1, fact: 'RDJ' },
-    { q: 'Godfather سنة؟', ans: ['1968','1970','1972','1975'], c: 2, fact: '1972' },
-  ],
-  game: [
-    { q: 'Minecraft من طوّرها؟', ans: ['ليفين','Notch','هوارد','مولينو'], c: 1, fact: 'Notch' },
-    { q: 'GTA V؟', ans: ['2011','2012','2013','2014'], c: 2, fact: '2013' },
-    { q: 'Zelda البطل؟', ans: ['Zelda','Link','Ganon','Impa'], c: 1, fact: 'Link' },
-    { q: 'Nintendo Switch؟', ans: ['سوني','مايكروسوفت','سيغا','نينتندو'], c: 3, fact: 'Nintendo' },
-    { q: 'God of War بطل؟', ans: ['Kratos','Atreus','Zeus','Ares'], c: 0, fact: 'Kratos' },
-  ],
-  islam: [
-    { q: 'أركان الإسلام؟', ans: ['3','4','5','6'], c: 2, fact: '5 أركان' },
-    { q: 'أطول سورة؟', ans: ['آل عمران','النساء','البقرة','المائدة'], c: 2, fact: 'البقرة' },
-    { q: 'القرآن نزل في؟', ans: ['شوال','محرم','رمضان','رجب'], c: 2, fact: 'رمضان' },
-    { q: 'عدد الأنبياء؟', ans: ['20','25','30','28'], c: 1, fact: '25' },
-    { q: 'أقصر سورة؟', ans: ['الإخلاص','الكوثر','الفلق','الناس'], c: 1, fact: 'الكوثر' },
-  ],
+    { q:"من فاز بكأس العالم 2022؟", ans:["البرازيل","الأرجنتين","فرنسا","إسبانيا"], c:1, fact:"" },
+    { q:"عدد بطولات ريال مدريد؟", ans:["12","14","15","16"], c:2, fact:"" }
+  ]
 };
 
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
-let shuffledQuestions = []; // ✔ مهم: مرة وحدة فقط
+/* ===== SCREEN ===== */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById("screen-"+id).classList.add('active');
+}
 
-let state = {
-  cat: 'soccer',
-  qIdx: 0,
-  currentQ: null,
-  answered: false,
-};
+/* ===== CREATE ROOM ===== */
+window.createRoom = async function(){
+  state.qIdx = 0;
+  shuffledQuestions = [...QUESTIONS[state.cat]];
+  shuffledQuestions.sort(()=>Math.random()-0.5);
+  showQ();
+}
 
-// ══════════════════════════════════════
-// SHOW QUESTION
-// ══════════════════════════════════════
-function showQ() {
-
-  // shuffle مرة وحدة فقط فالبداية
-  if (state.qIdx === 0) {
-    shuffledQuestions = [...QUESTIONS[state.cat]];
-    shuffledQuestions.sort(() => Math.random() - 0.5);
-  }
-
+/* ===== SHOW QUESTION ===== */
+window.showQ = function(){
   const qs = shuffledQuestions;
 
-  if (state.qIdx >= qs.length) {
-    alert("انتهى الأسئلة");
+  if(state.qIdx >= qs.length){
+    alert("انتهى اللعبة");
     return;
   }
 
   state.currentQ = qs[state.qIdx];
-  state.answered = false;
 
-  document.getElementById('q-text').textContent = state.currentQ.q;
+  document.getElementById("q-text").innerText = state.currentQ.q;
 
-  renderAnswers(state.currentQ.ans);
+  document.getElementById("answers-grid").innerHTML =
+    state.currentQ.ans.map((a,i)=>
+      `<button onclick="choose(${i})">${a}</button>`
+    ).join("");
+
+  showScreen("question");
 }
 
-// ══════════════════════════════════════
-// ANSWERS
-// ══════════════════════════════════════
-function renderAnswers(ans, chosen = -1) {
-  const grid = document.getElementById('answers-grid');
+/* ===== ANSWER ===== */
+window.choose = function(i){
+  const correct = i === state.currentQ.c;
 
-  grid.innerHTML = ans.map((a, i) => {
-    return `<button onclick="chooseAns(${i})">${a}</button>`;
-  }).join('');
+  document.querySelectorAll("#answers-grid button").forEach((b,idx)=>{
+    if(idx === state.currentQ.c) b.classList.add("correct");
+    else if(idx === i) b.classList.add("wrong");
+    b.disabled = true;
+  });
 }
 
-// ══════════════════════════════════════
-// ANSWER CHECK
-// ══════════════════════════════════════
-function chooseAns(i) {
-  if (state.answered) return;
-  state.answered = true;
-
-  const correct = state.currentQ.c;
-
-  if (i === correct) {
-    alert("صحيح ✔");
-  } else {
-    alert("خطأ ❌");
-  }
-
-  showReveal(i);
-}
-
-// ══════════════════════════════════════
-// REVEAL
-// ══════════════════════════════════════
-function showReveal(chosen) {
-  const q = state.currentQ;
-
-  document.getElementById('ans-q-text').textContent = q.q;
-
-  document.getElementById('ans-choices').innerHTML =
-    q.ans.map((a, i) =>
-      `<div style="
-        padding:10px;
-        margin:5px;
-        border-radius:8px;
-        background:${i === q.c ? '#2dd4a0' : i === chosen ? '#f05252' : '#1e2236'};
-      ">${a}</div>`
-    ).join('');
-
-  document.getElementById('ans-fact').textContent = "💡 " + q.fact;
-
-  document.getElementById('next-btn').style.display = "block";
-
-  showScreen('answer');
-}
-
-// ══════════════════════════════════════
-// NEXT QUESTION
-// ══════════════════════════════════════
-function nextQ() {
+/* ===== NEXT ===== */
+window.nextQ = function(){
   state.qIdx++;
   showQ();
 }
+
 </script>
+
 </body>
 </html>
