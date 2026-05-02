@@ -424,7 +424,7 @@
   <!-- ════════ HOME ════════ -->
   <div class="screen active" id="screen-home">
     <div class="logo">
-      <div class="logo-title">Quiz<span>SLAT7</span></div>
+      <div class="logo-title">Quiz<span>Arena</span></div>
       <div class="logo-sub">مسابقات في الوقت الحقيقي</div>
     </div>
 
@@ -588,14 +588,14 @@ import { getDatabase, ref, set, get, update, onValue, off }
 
 // ← ضع config الخاص بك من Firebase Console هنا
 const firebaseConfig = {
-  apiKey: "AIzaSyCh59IHfh4nsdKo425SGTBTUeg7rv8TP_Y",
-  authDomain: "quiz-arena-b5a1e.firebaseapp.com",
-  databaseURL: "https://quiz-arena-b5a1e-default-rtdb.firebaseio.com",
-  projectId: "quiz-arena-b5a1e",
-  storageBucket: "quiz-arena-b5a1e.firebasestorage.app",
-  messagingSenderId: "105602779185",
-  appId: "1:105602779185:web:f79449f370736a8c53ad10"
+  apiKey: "AIzaSyBIi2a8QN9MTRe6hZTwOvJJDCN287FeWNg",
+  authDomain: "quiz-506ce.firebaseapp.com",
+  projectId: "quiz-506ce",
+  storageBucket: "quiz-506ce.firebasestorage.app",
+  messagingSenderId: "924279941366",
+  appId: "1:924279941366:web:7e5f40c8ede1a75b75a4d7"
 };
+
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -619,133 +619,600 @@ window.dispatchEvent(new Event('firebase-ready'));
 const QUESTIONS = {
   soccer: [
     { q: 'من فاز بكأس العالم 2022 في قطر؟', ans: ['البرازيل','الأرجنتين','فرنسا','إسبانيا'], c: 1, fact: 'الأرجنتين فازت للمرة الثالثة بقيادة ميسي' },
-    { q: 'كم مرة فاز ريال مدريد بدوري الأبطال؟', ans: ['12','14','15','16'], c: 2, fact: 'ريال مدريد أكثر فريق تتويجاً بـ 15 لقب' },
+    { q: 'كم مرة فاز ريال مدريد بدوري الأبطال؟', ans: ['12','14','15','16'], c: 3, fact: 'ريال مدريد أكثر فريق تتويجاً بـ 15 لقب' },
     { q: 'من هو الهداف التاريخي في دوري الأبطال؟', ans: ['ميسي','مبابي','رونالدو','بنزيمة'], c: 2, fact: 'رونالدو سجل 140+ هدفاً في دوري الأبطال' },
-    { q: 'في أي عام أُسِّس نادي برشلونة؟', ans: ['1895','1899','1902','1910'], c: 1, fact: 'برشلونة تأسس سنة 1899' },
-    { q: 'من لقب "El Bicho"؟', ans: ['رونالدو','ميسي','نيمار','سواريز'], c: 0, fact: 'رونالدو' },
+    { q: 'في أي عام أُسِّس نادي برشلونة؟', ans: ['1895','1899','1902','1910'], c: 1, fact: 'برشلونة تأسس سنة 1899 من طرف Joan Gamper' },
+    { q: 'من لقب "El Bicho" في كرة القدم؟', ans: ['رونالدو','ميسي','نيمار','سواريز'], c: 0, fact: 'رونالدو لقّبه الجمهور بـ "الحشرة" لصعوبة إيقافه' },
   ],
   film: [
-    { q: 'من أخرج Inception؟', ans: ['سبيلبرغ','نولان','بيرتون','كاميرون'], c: 1, fact: 'كريستوفر نولان' },
-    { q: 'Titanic عدد الأوسكار؟', ans: ['9','11','13','7'], c: 1, fact: '11 أوسكار' },
-    { q: 'أعلى فيلم إيراداً؟', ans: ['Endgame','Avatar','Titanic','Star Wars'], c: 1, fact: 'Avatar' },
-    { q: 'Iron Man؟', ans: ['إيفانز','داوني','هيمسورث','روفالو'], c: 1, fact: 'RDJ' },
-    { q: 'Godfather سنة؟', ans: ['1968','1970','1972','1975'], c: 2, fact: '1972' },
+    { q: 'من أخرج فيلم Inception (2010)؟', ans: ['ستيفن سبيلبرغ','كريستوفر نولان','تيم بيرتون','جيمس كاميرون'], c: 1, fact: 'نولان اشتُهر بأفلامه الفلسفية المعقدة' },
+    { q: 'كم أوسكاراً حصل فيلم Titanic؟', ans: ['9','11','13','7'], c: 1, fact: 'Titanic ربط الرقم القياسي لـ Ben-Hur بـ 11 جائزة' },
+    { q: 'ما هو أعلى فيلم إيراداً في التاريخ؟', ans: ['Endgame','Avatar','Titanic','Star Wars'], c: 1, fact: 'Avatar 2009 حقق 2.9 مليار دولار' },
+    { q: 'من لعب دور Iron Man في Marvel؟', ans: ['كريس إيفانز','روبرت داوني جونيور','كريس هيمسورث','مارك روفالو'], c: 1, fact: 'داوني جسّد Tony Stark لأكثر من 10 سنوات' },
+    { q: 'في أي عام صدر فيلم The Godfather؟', ans: ['1968','1970','1972','1975'], c: 2, fact: 'The Godfather يُعدّ من أعظم أفلام السينما' },
   ],
   game: [
-    { q: 'Minecraft من طوّرها؟', ans: ['ليفين','Notch','هوارد','مولينو'], c: 1, fact: 'Notch' },
-    { q: 'GTA V؟', ans: ['2011','2012','2013','2014'], c: 2, fact: '2013' },
-    { q: 'Zelda البطل؟', ans: ['Zelda','Link','Ganon','Impa'], c: 1, fact: 'Link' },
-    { q: 'Nintendo Switch؟', ans: ['سوني','مايكروسوفت','سيغا','نينتندو'], c: 3, fact: 'Nintendo' },
-    { q: 'God of War بطل؟', ans: ['Kratos','Atreus','Zeus','Ares'], c: 0, fact: 'Kratos' },
+    { q: 'من طوّر لعبة Minecraft؟', ans: ['غاريت ليفين','نوتش (ماركوس بيرسون)','تود هوارد','بيتر مولينو'], c: 1, fact: 'Notch باع Minecraft لمايكروسوفت بـ 2.5 مليار دولار' },
+    { q: 'في أي عام صدرت لعبة GTA V؟', ans: ['2011','2012','2013','2014'], c: 2, fact: 'GTA V من أكثر الألعاب مبيعاً في التاريخ بـ 185 مليون' },
+    { q: 'من هو البطل الرئيسي في The Legend of Zelda؟', ans: ['Zelda','Link','Ganon','Impa'], c: 1, fact: 'Link هو البطل، أما Zelda فهي الأميرة' },
+    { q: 'من صنعت جهاز Nintendo Switch؟', ans: ['سوني','مايكروسوفت','سيغا','نينتندو'], c: 3, fact: 'Nintendo Switch صدر 2017 وحقق نجاحاً استثنائياً' },
+    { q: 'ما هو اسم بطل لعبة God of War؟', ans: ['Kratos','Atreus','Zeus','Ares'], c: 0, fact: 'Kratos إله الحرب الإسباني السابق' },
   ],
   islam: [
-    { q: 'أركان الإسلام؟', ans: ['3','4','5','6'], c: 2, fact: '5 أركان' },
-    { q: 'أطول سورة؟', ans: ['آل عمران','النساء','البقرة','المائدة'], c: 2, fact: 'البقرة' },
-    { q: 'القرآن نزل في؟', ans: ['شوال','محرم','رمضان','رجب'], c: 2, fact: 'رمضان' },
-    { q: 'عدد الأنبياء؟', ans: ['20','25','30','28'], c: 1, fact: '25' },
-    { q: 'أقصر سورة؟', ans: ['الإخلاص','الكوثر','الفلق','الناس'], c: 1, fact: 'الكوثر' },
+    { q: 'كم عدد أركان الإسلام؟', ans: ['3','4','5','6'], c: 2, fact: 'الشهادة، الصلاة، الزكاة، الصوم، الحج' },
+    { q: 'ما هي أطول سورة في القرآن الكريم؟', ans: ['آل عمران','النساء','البقرة','المائدة'], c: 2, fact: 'البقرة تحتوي على 286 آية وهي أطول سورة' },
+    { q: 'في أي شهر أُنزل القرآن الكريم؟', ans: ['شوال','محرم','رمضان','رجب'], c: 2, fact: 'قال تعالى: شهر رمضان الذي أُنزل فيه القرآن' },
+    { q: 'كم عدد أنبياء الإسلام المذكورين في القرآن؟', ans: ['20','25','30','28'], c: 1, fact: 'ذُكر 25 نبياً بالاسم في القرآن الكريم' },
+    { q: 'ما هو أقصر سورة في القرآن الكريم؟', ans: ['الإخلاص','الكوثر','الفلق','الناس'], c: 1, fact: 'سورة الكوثر 3 آيات فقط — أقصر سورة' },
   ],
 };
 
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
-let shuffledQuestions = []; // ✔ مهم: مرة وحدة فقط
+const CAT_NAMES = { soccer:'كرة القدم', film:'الأفلام', game:'الألعاب', islam:'إسلاميات' };
+const AV_COLORS = ['av-1','av-2','av-3','av-4'];
 
+// ══════════════════════════════════════
+//   GAME STATE
+// ══════════════════════════════════════
 let state = {
+  name: '',
+  roomCode: '',
+  playerKey: '',  // player1..4
+  isHost: false,
   cat: 'soccer',
+  mode: '1v1',
+  players: {},
   qIdx: 0,
+  streak: 0,
+  myPts: 0,
+  timer: null,
+  timeLeft: 15,
   currentQ: null,
   answered: false,
+  puUsed: { f50: false, freeze: false, x2: false },
+  x2Active: false,
+  roomListener: null,
 };
 
 // ══════════════════════════════════════
-// SHOW QUESTION
+//   SCREEN MANAGEMENT
+// ══════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+}
+
+// ══════════════════════════════════════
+//   HOME CONTROLS
+// ══════════════════════════════════════
+function pickCat(el, cat) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  state.cat = cat;
+}
+
+function pickMode(mode) {
+  state.mode = mode;
+  document.getElementById('mode-1v1').classList.toggle('sel', mode === '1v1');
+  document.getElementById('mode-2v2').classList.toggle('sel', mode === '2v2');
+}
+
+// ══════════════════════════════════════
+//   CREATE ROOM
+// ══════════════════════════════════════
+async function createRoom() {
+  const name = document.getElementById('home-name').value.trim();
+  if (!name) { alert('اكتب اسمك أولاً'); return; }
+  if (!window.firebaseReady) { alert('Firebase غير محضّر — ضع config الخاص بك'); return; }
+
+  state.name = name;
+  state.playerKey = 'player1';
+  state.isHost = true;
+  state.roomCode = Math.random().toString(36).substr(2, 6).toUpperCase();
+  state.myPts = 0;
+
+  await dbSet(dbRef(db, `rooms/${state.roomCode}`), {
+    host: state.playerKey,
+    cat: state.cat,
+    mode: state.mode,
+    status: 'waiting',
+    qIdx: 0,
+    players: {
+      player1: { name: state.name, pts: 0, team: 'A' }
+    }
+  });
+
+  listenRoom();
+  updateLobbyUI();
+  showScreen('lobby');
+}
+
+// ══════════════════════════════════════
+//   JOIN ROOM
+// ══════════════════════════════════════
+function showJoin() { showScreen('join'); }
+
+async function joinRoom() {
+  const name = document.getElementById('join-name').value.trim();
+  const code = document.getElementById('join-input').value.trim().toUpperCase();
+  if (!name) { alert('اكتب اسمك'); return; }
+  if (code.length < 4) { alert('اكتب كود الغرفة'); return; }
+  if (!window.firebaseReady) { alert('Firebase غير محضّر'); return; }
+
+  const snap = await dbGet(dbRef(db, `rooms/${code}`));
+  if (!snap.exists()) { alert('الغرفة غير موجودة'); return; }
+
+  const room = snap.val();
+  if (room.status !== 'waiting') { alert('اللعبة بدأت'); return; }
+
+  const playerCount = Object.keys(room.players || {}).length;
+  if (playerCount >= 4) { alert('الغرفة ممتلئة'); return; }
+
+  state.name = name;
+  state.roomCode = code;
+  state.isHost = false;
+  state.cat = room.cat;
+  state.mode = room.mode;
+  state.myPts = 0;
+
+  const keys = ['player1','player2','player3','player4'];
+  const used = Object.keys(room.players || {});
+  state.playerKey = keys.find(k => !used.includes(k));
+
+  const team = state.playerKey === 'player1' || state.playerKey === 'player3' ? 'A' : 'B';
+  await dbUpdate(dbRef(db, `rooms/${code}/players/${state.playerKey}`), {
+    name: state.name, pts: 0, team
+  });
+
+  listenRoom();
+  updateLobbyUI();
+  showScreen('lobby');
+}
+
+function updateLobbyUI() {
+  document.getElementById('lobby-code').textContent = state.roomCode;
+  document.getElementById('lobby-cat').textContent = CAT_NAMES[state.cat] || state.cat;
+  document.getElementById('lobby-mode').textContent = state.mode;
+}
+
+// ══════════════════════════════════════
+//   LISTEN TO ROOM (real-time)
+// ══════════════════════════════════════
+function listenRoom() {
+  if (state.roomListener) {
+    dbOff(dbRef(db, `rooms/${state.roomCode}`));
+  }
+  state.roomListener = dbOnValue(dbRef(db, `rooms/${state.roomCode}`), (snap) => {
+    if (!snap.exists()) return;
+    const room = snap.val();
+    state.players = room.players || {};
+
+    const screen = document.querySelector('.screen.active')?.id;
+
+    if (room.status === 'waiting') {
+      renderLobbyPlayers(room);
+    } else if (room.status === 'countdown') {
+      if (screen !== 'screen-countdown') startCountdownUI(room);
+    } else if (room.status === 'playing') {
+      state.qIdx = room.qIdx || 0;
+      state.cat = room.cat;
+      if (screen !== 'screen-question') showQ();
+    } else if (room.status === 'next_q') {
+      state.qIdx = room.qIdx || 0;
+      showQ();
+    } else if (room.status === 'done') {
+      showResults();
+    }
+
+    // live scores update
+    renderLiveScores('live-scores');
+    renderLiveScores('ans-scores');
+  });
+}
+
+// ══════════════════════════════════════
+//   LOBBY
+// ══════════════════════════════════════
+function renderLobbyPlayers(room) {
+  const players = room.players || {};
+  const list = document.getElementById('players-list');
+  const keys = Object.keys(players);
+  list.innerHTML = keys.map((k, i) => {
+    const p = players[k];
+    const isHost = k === room.host;
+    return `<div class="player-item">
+      <div class="player-av ${AV_COLORS[i]}">${p.name.slice(0,2)}</div>
+      <span class="player-name">${p.name}</span>
+      ${isHost ? '<span class="host-tag">هوست</span>' : '<div class="wait-dot"></div>'}
+    </div>`;
+  }).join('');
+
+  document.getElementById('player-count').textContent = `${keys.length}/4`;
+  document.getElementById('lobby-wait').textContent =
+    keys.length >= 2 ? 'جاهزون للعب!' : 'في انتظار لاعب آخر على الأقل...';
+
+  const startBtn = document.getElementById('start-btn');
+  startBtn.disabled = !(state.isHost && keys.length >= 2);
+}
+
+async function startGame() {
+  await dbUpdate(dbRef(db, `rooms/${state.roomCode}`), {
+    status: 'countdown',
+    qIdx: 0
+  });
+}
+
+async function leaveRoom() {
+  await dbUpdate(dbRef(db, `rooms/${state.roomCode}/players`), {
+    [state.playerKey]: null
+  });
+  showScreen('home');
+}
+
+// ══════════════════════════════════════
+//   COUNTDOWN
+// ══════════════════════════════════════
+function startCountdownUI(room) {
+  showScreen('countdown');
+  document.getElementById('cd-cat').textContent = (CAT_NAMES[room.cat] || room.cat) + ' — ' + room.mode;
+  const el = document.getElementById('cd-num');
+  let c = 3;
+  el.textContent = c;
+  const iv = setInterval(() => {
+    c--;
+    if (c > 0) {
+      el.textContent = c;
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = 'pop .4s ease';
+    } else {
+      clearInterval(iv);
+      if (state.isHost) {
+        dbUpdate(dbRef(db, `rooms/${state.roomCode}`), { status: 'playing', qIdx: 0 });
+      }
+    }
+  }, 1000);
+}
+
+// ══════════════════════════════════════
+//   QUESTION
 // ══════════════════════════════════════
 function showQ() {
+  clearInterval(state.timer);
+  state.answered = false;
+  state.x2Active = false;
+  state.puUsed = { f50: false, freeze: false, x2: false };
 
-  // shuffle مرة وحدة فقط فالبداية
-  if (state.qIdx === 0) {
-    shuffledQuestions = [...QUESTIONS[state.cat]];
-    shuffledQuestions.sort(() => Math.random() - 0.5);
-  }
-
-  const qs = shuffledQuestions;
-
-  if (state.qIdx >= qs.length) {
-    alert("انتهى الأسئلة");
+  const qs = QUESTIONS[state.cat];
+  if (!qs || state.qIdx >= qs.length) {
+    if (state.isHost) dbUpdate(dbRef(db, `rooms/${state.roomCode}`), { status: 'done' });
     return;
   }
 
   state.currentQ = qs[state.qIdx];
-  state.answered = false;
-
+  document.getElementById('q-label').textContent = `سؤال ${state.qIdx + 1}/${qs.length}`;
   document.getElementById('q-text').textContent = state.currentQ.q;
-
-  renderAnswers(state.currentQ.ans);
+  renderAnswers(state.currentQ.ans, -1);
+  resetPUs();
+  showScreen('question');
+  startTimer();
 }
 
-// ══════════════════════════════════════
-// ANSWERS
-// ══════════════════════════════════════
-function renderAnswers(ans, chosen = -1) {
+function renderAnswers(ans, chosen) {
   const grid = document.getElementById('answers-grid');
-
   grid.innerHTML = ans.map((a, i) => {
-    return `<button onclick="chooseAns(${i})">${a}</button>`;
+    let cls = 'ans-btn';
+    if (chosen !== -1) {
+      if (i === state.currentQ.c) cls += ' reveal';
+      else if (i === chosen) cls += ' wrong';
+    }
+    return `<button class="${cls}" onclick="chooseAns(${i})" ${chosen !== -1 ? 'disabled' : ''}>${a}</button>`;
   }).join('');
 }
 
 // ══════════════════════════════════════
-// ANSWER CHECK
+//   TIMER
 // ══════════════════════════════════════
-function chooseAns(i) {
-  if (state.answered) return;
-  state.answered = true;
+function startTimer() {
+  state.timeLeft = 15;
+  const fill = document.getElementById('timer-fill');
+  const disp = document.getElementById('time-display');
+  fill.style.width = '100%';
+  fill.className = 'timer-fill';
 
-  const correct = state.currentQ.c;
-
-  if (i === correct) {
-    alert("صحيح ✔");
-  } else {
-    alert("خطأ ❌");
-  }
-
-  showReveal(i);
+  state.timer = setInterval(() => {
+    state.timeLeft--;
+    const pct = Math.round(state.timeLeft / 15 * 100);
+    fill.style.width = pct + '%';
+    disp.textContent = state.timeLeft;
+    if (state.timeLeft <= 5) { fill.className = 'timer-fill urgent'; disp.style.color = 'var(--red)'; }
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timer);
+      if (!state.answered) autoReveal();
+    }
+  }, 1000);
 }
 
 // ══════════════════════════════════════
-// REVEAL
+//   ANSWER
 // ══════════════════════════════════════
-function showReveal(chosen) {
-  const q = state.currentQ;
+async function chooseAns(i) {
+  if (state.answered) return;
+  clearInterval(state.timer);
+  state.answered = true;
 
-  document.getElementById('ans-q-text').textContent = q.q;
+  const correct = i === state.currentQ.c;
+  let pts = 0;
+  if (correct) {
+    const spd = state.timeLeft;
+    pts = spd >= 10 ? 1000 : spd >= 5 ? 700 : 400;
+    if (state.x2Active) pts *= 2;
+    pts += state.streak * 100;
+    state.streak++;
+    state.myPts += pts;
+    if (state.streak >= 3) showStreakToast();
+  } else {
+    state.streak = 0;
+  }
 
-  document.getElementById('ans-choices').innerHTML =
-    q.ans.map((a, i) =>
-      `<div style="
-        padding:10px;
-        margin:5px;
-        border-radius:8px;
-        background:${i === q.c ? '#2dd4a0' : i === chosen ? '#f05252' : '#1e2236'};
-      ">${a}</div>`
-    ).join('');
+  renderAnswers(state.currentQ.ans, i);
 
-  document.getElementById('ans-fact').textContent = "💡 " + q.fact;
+  await dbUpdate(dbRef(db, `rooms/${state.roomCode}/players/${state.playerKey}`), {
+    pts: state.myPts,
+    answered: true
+  });
 
-  document.getElementById('next-btn').style.display = "block";
+  setTimeout(() => showAnswerReveal(correct, i, pts), 1000);
+}
+
+function autoReveal() {
+  state.answered = true;
+  state.streak = 0;
+  renderAnswers(state.currentQ.ans, state.currentQ.c);
+  setTimeout(() => showAnswerReveal(false, -1, 0), 800);
+}
+
+function showAnswerReveal(correct, chosen, pts) {
+  const msg = document.getElementById('ans-result-msg');
+  msg.textContent = correct ? `صحيح! +${pts} نقطة` : 'خطأ — الجواب الصحيح:';
+  msg.className = 'result-msg ' + (correct ? 'ok' : 'fail');
+
+  document.getElementById('ans-q-text').textContent = state.currentQ.q;
+  document.getElementById('ans-fact').textContent = '💡 ' + state.currentQ.fact;
+
+  const choices = document.getElementById('ans-choices');
+  choices.innerHTML = state.currentQ.ans.map((a, i) =>
+    `<div class="ans-btn ${i === state.currentQ.c ? 'correct' : ''}" style="cursor:default">${a}</div>`
+  ).join('');
+
+  const qs = QUESTIONS[state.cat];
+  const isLast = state.qIdx >= qs.length - 1;
+  document.getElementById('next-btn').textContent = isLast ? 'النتائج النهائية' : 'السؤال التالي';
+  document.getElementById('next-btn').style.display = state.isHost ? 'block' : 'none';
+
+  if (!state.isHost) {
+    document.getElementById('next-btn').style.display = 'none';
+    const info = document.createElement('div');
+    info.style.cssText = 'text-align:center;font-size:12px;color:var(--muted);padding:4px';
+    info.textContent = 'في انتظار الهوست...';
+    document.getElementById('next-btn').replaceWith(info);
+  }
 
   showScreen('answer');
 }
 
-// ══════════════════════════════════════
-// NEXT QUESTION
-// ══════════════════════════════════════
-function nextQ() {
-  state.qIdx++;
-  showQ();
+async function nextQ() {
+  const qs = QUESTIONS[state.cat];
+  const next = state.qIdx + 1;
+  if (next >= qs.length) {
+    await dbUpdate(dbRef(db, `rooms/${state.roomCode}`), { status: 'done' });
+  } else {
+    await dbUpdate(dbRef(db, `rooms/${state.roomCode}`), {
+      status: 'next_q',
+      qIdx: next,
+    });
+    setTimeout(() => {
+      dbUpdate(dbRef(db, `rooms/${state.roomCode}`), { status: 'playing' });
+    }, 100);
+  }
 }
+
+// ══════════════════════════════════════
+//   POWER-UPS
+// ══════════════════════════════════════
+function resetPUs() {
+  ['5050','freeze','x2'].forEach(id => {
+    const btn = document.getElementById('pu-' + id);
+    btn.className = 'pu-btn' + (id === '5050' ? ' active' : '');
+    btn.disabled = false;
+  });
+}
+
+function use5050() {
+  if (state.puUsed.f50 || state.answered) return;
+  state.puUsed.f50 = true;
+  document.getElementById('pu-5050').classList.add('used');
+  const btns = document.querySelectorAll('#answers-grid .ans-btn');
+  let removed = 0;
+  btns.forEach((b, i) => {
+    if (i !== state.currentQ.c && removed < 2) {
+      b.style.opacity = '.2'; b.disabled = true; removed++;
+    }
+  });
+}
+
+function useFreeze() {
+  if (state.puUsed.freeze || state.answered) return;
+  state.puUsed.freeze = true;
+  state.timeLeft = Math.min(state.timeLeft + 5, 15);
+  document.getElementById('pu-freeze').classList.add('used');
+}
+
+function useX2() {
+  if (state.puUsed.x2 || state.answered) return;
+  state.puUsed.x2 = true;
+  state.x2Active = true;
+  document.getElementById('pu-x2').className = 'pu-btn active used';
+}
+
+// ══════════════════════════════════════
+//   STREAK TOAST
+// ══════════════════════════════════════
+function showStreakToast() {
+  const t = document.getElementById('streak-toast');
+  t.textContent = `سلسلة ×${state.streak} — +${state.streak * 100} bonus!`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════
+//   LIVE SCORES
+// ══════════════════════════════════════
+function renderLiveScores(targetId) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const players = Object.entries(state.players || {}).sort((a, b) => b[1].pts - a[1].pts);
+  el.innerHTML = players.map(([k, p], i) => `
+    <div class="score-row">
+      <div class="player-av ${AV_COLORS[i % 4]}" style="width:28px;height:28px;font-size:11px">${p.name.slice(0,2)}</div>
+      <span class="score-name">${p.name}</span>
+      <span class="score-pts ${i === 0 ? 'lead' : ''}">${(p.pts || 0).toLocaleString()}</span>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════
+//   RESULTS
+// ══════════════════════════════════════
+function showResults() {
+  const players = Object.entries(state.players || {}).sort((a, b) => b[1].pts - a[1].pts);
+
+  // Podium
+  const podium = document.getElementById('podium');
+  const blocks = [
+    { cls: 'p2-block', label: '2', avCls: 'av-2' },
+    { cls: 'p1-block', label: '1', avCls: 'av-1' },
+    { cls: 'p3-block', label: '3', avCls: 'av-3' },
+  ];
+  const order = players.length >= 3
+    ? [players[1], players[0], players[2]]
+    : players.length === 2 ? [players[1], players[0]] : [players[0]];
+  const bOrder = players.length >= 3 ? blocks : [blocks[1], blocks[0]];
+
+  podium.innerHTML = order.map(([k, p], i) => `
+    <div class="podium-col">
+      <div class="podium-av ${bOrder[i].avCls}">${p.name.slice(0,2)}</div>
+      <div class="podium-name">${p.name}</div>
+      <div class="podium-block ${bOrder[i].cls}">${bOrder[i].label}</div>
+    </div>`).join('');
+
+  // Full scores
+  const fs = document.getElementById('final-scores');
+  fs.innerHTML = players.map(([k, p], i) => `
+    <div class="score-row">
+      <div class="player-av ${AV_COLORS[i % 4]}" style="width:28px;height:28px;font-size:11px">${p.name.slice(0,2)}</div>
+      <span class="score-name">${p.name}</span>
+      <span style="font-size:11px;color:var(--muted);margin-left:auto;margin-right:8px">#${i+1}</span>
+      <span class="score-pts ${i === 0 ? 'lead' : ''}">${(p.pts || 0).toLocaleString()} نقطة</span>
+    </div>`).join('');
+
+  showScreen('results');
+}
+
+async function playAgain() {
+  if (!state.isHost) { alert('فقط الهوست يقدر يعيد اللعبة'); return; }
+  await dbUpdate(dbRef(db, `rooms/${state.roomCode}`), {
+    status: 'waiting',
+    qIdx: 0,
+  });
+  // reset pts
+  const updates = {};
+  Object.keys(state.players).forEach(k => { updates[`players/${k}/pts`] = 0; });
+  await dbUpdate(dbRef(db, `rooms/${state.roomCode}`), updates);
+  state.myPts = 0; state.streak = 0;
+  showScreen('lobby');
+}
+
+function goHome() {
+  if (state.roomListener) dbOff(dbRef(db, `rooms/${state.roomCode}`));
+  showScreen('home');
+}
+
+// ══════════════════════════════════════
+//   DEMO MODE (بدون Firebase)
+// ══════════════════════════════════════
+window.addEventListener('firebase-ready', () => { console.log('Firebase جاهز'); });
+
+// لو Firebase مش محضّر — وضع تجريبي محلي
+setTimeout(() => {
+  if (!window.firebaseReady) {
+    console.warn('Firebase غير محضّر — وضع تجريبي');
+    window.firebaseReady = 'demo';
+    window.db = null;
+    window.dbRef = () => null;
+    window.dbSet = async () => {};
+    window.dbGet = async () => ({ exists: () => false, val: () => null });
+    window.dbUpdate = async () => {};
+    window.dbOnValue = () => {};
+    window.dbOff = () => {};
+
+    // Simulate demo
+    window.createRoom = function() {
+      const name = document.getElementById('home-name').value.trim() || 'لاعب';
+      state.name = name; state.playerKey = 'player1'; state.isHost = true;
+      state.roomCode = 'DEMO01'; state.myPts = 0;
+      state.players = {
+        player1: { name, pts: 0, team: 'A' },
+        player2: { name: 'يوسف', pts: 0, team: 'B' }
+      };
+      document.getElementById('lobby-code').textContent = 'DEMO01';
+      document.getElementById('lobby-cat').textContent = CAT_NAMES[state.cat];
+      document.getElementById('lobby-mode').textContent = state.mode;
+      renderLobbyPlayers({ players: state.players, host: 'player1' });
+      document.getElementById('start-btn').disabled = false;
+      showScreen('lobby');
+    };
+    window.startGame = function() {
+      showScreen('countdown');
+      document.getElementById('cd-cat').textContent = CAT_NAMES[state.cat] + ' — ' + state.mode;
+      let c = 3;
+      document.getElementById('cd-num').textContent = c;
+      const iv = setInterval(() => {
+        c--;
+        if (c > 0) { document.getElementById('cd-num').textContent = c; }
+        else { clearInterval(iv); state.qIdx = 0; showQ(); }
+      }, 1000);
+    };
+    window.nextQ = function() {
+      const qs = QUESTIONS[state.cat];
+      state.qIdx++;
+      if (state.qIdx >= qs.length) { showResults(); }
+      else { showQ(); }
+    };
+    window.leaveRoom = function() { showScreen('home'); };
+    window.joinRoom = function() { alert('وضع تجريبي — ضع Firebase config لتفعيل الغرف الحقيقية'); };
+    window.playAgain = function() {
+      state.myPts = 0; state.streak = 0; state.qIdx = 0;
+      Object.keys(state.players).forEach(k => state.players[k].pts = 0);
+      showScreen('lobby');
+    };
+    window.goHome = function() { showScreen('home'); };
+  }
+}, 2000);
+
+window.showScreen = showScreen;
+window.showJoin   = showJoin;
+window.pickCat    = pickCat;
+window.pickMode   = pickMode;
+window.createRoom = createRoom;
+window.joinRoom   = joinRoom;
+window.startGame  = startGame;
+window.leaveRoom  = leaveRoom;
+window.chooseAns  = chooseAns;
+window.nextQ      = nextQ;
+window.use5050    = use5050;
+window.useFreeze  = useFreeze;
+window.useX2      = useX2;
+window.playAgain  = playAgain;
+window.goHome     = goHome;
 </script>
 </body>
 </html>
